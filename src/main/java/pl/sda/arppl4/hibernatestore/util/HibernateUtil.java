@@ -12,7 +12,7 @@ public abstract class HibernateUtil {
     static {
         // Załadowanie "Registry" jako kolekcji parametrów konfiguracyjnych do rejestru.
         // Stworzenie obiektu zawierającego zestaw ustawień.
-        StandardServiceRegistry standardServiceRegistry = new StandardServiceRegistryBuilder().configure("template_hibernate.cfg.xml").build();
+        StandardServiceRegistry standardServiceRegistry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
 
         // Stworzenie obiektu metadata - dane opisujące połączenie z bazą danych.
         Metadata metadata = new MetadataSources(standardServiceRegistry).getMetadataBuilder().build();
