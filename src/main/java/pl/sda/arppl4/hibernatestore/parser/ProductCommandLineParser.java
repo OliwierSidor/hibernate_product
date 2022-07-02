@@ -77,8 +77,9 @@ public class ProductCommandLineParser {
                 product.setUnit(productUnit);
             }
             dao.updateProduct(product);
+            System.out.println(product + "updated");
         } else {
-            Optional.ofNullable("Wrong ID");
+            System.out.println("Input is incorrect");
         }
     }
 
@@ -107,7 +108,7 @@ public class ProductCommandLineParser {
         System.out.println("Type producent: ");
         String producent = scanner.next();
         LocalDate expiryDate = loadExpiryDateFromUser();
-        Double price = handlePrice();
+        Double price = handleDoubleValue("price");
         Double quantity = handleQuantity();
         ProductUnit productUnit = loadProductUnitFromUSer();
         Product product = new Product(null, name, price, producent, expiryDate, quantity, productUnit);
@@ -115,30 +116,22 @@ public class ProductCommandLineParser {
     }
 
     private Double handleQuantity() {
-        Double quantity = null;
-        do {
-            try {
-                System.out.println("Type quantity: ");
-                quantity = scanner.nextDouble();
-            } catch (InputMismatchException ime) {
-                System.err.println("Type numebers!");
-            }
-        } while (quantity == null);
-        return quantity;
+        return handleDoubleValue("quantity");
     }
 
-    private Double handlePrice() {
-        Double price = null;
+    private Double handleDoubleValue(String name) {
+        Double value = null;
         do {
             try {
-                System.out.println("Type price: ");
-                price = scanner.nextDouble();
+                System.out.println("Type " + name + ": ");
+                value = scanner.nextDouble();
             } catch (InputMismatchException ime) {
-                System.err.println("Type numebers!");
+                String token = scanner.next();
+                System.err.println("Input is incorrect, entered token: " + token);
             }
 
-        } while (price == null);
-        return price;
+        } while (value == null);
+        return value;
     }
 
     private void handleRemoveCommand() {
@@ -147,6 +140,9 @@ public class ProductCommandLineParser {
         Optional<Product> optionalProduct = dao.returnProduct(id);
         if (optionalProduct.isPresent()) {
             dao.removeProduct(optionalProduct.get());
+            System.out.println("Product removed");
+        }  else {
+            System.out.println("Product not found");
         }
     }
 
