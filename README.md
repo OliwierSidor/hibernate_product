@@ -14,7 +14,7 @@ Do uruchomienia projektu niezbędne jest posiadanie:
 - 
 ### Jak uruchomić
 Do uruchomienia konieczne jest skonfigurowanie połączenia bazodanowego. Wzór pliku
-konfiguracyjnego `hibernate.cfg.xml` znajduje się w katalogu `scr/main/resources`.
+konfiguracyjnego `template_hibernate.cfg.xml` znajduje się w katalogu `scr/main/resources`.
 Plik należy skopiować i zmienić treść następujących pól.
 ```xml
         <property name="connection.url"></property> <!--TODO: zmienić adres połączenia-->
