@@ -26,7 +26,7 @@ public class ProductCommandLineParser {
     public void parse() {
         String command;
         do {
-            System.out.println("Command: add/remove/show/list/update");
+            System.out.println("Command: add/remove/show/list/update/quit");
             command = scanner.next();
             if (command.equals("add")) {
                 handleAddCommand();
@@ -39,43 +39,47 @@ public class ProductCommandLineParser {
             } else if (command.equals("update")) {
                 handleUpdateCommand();
             }
-            System.out.println("If you want end programm type 'quit'");
         } while (!command.equals("quit"));
     }
 
     private void handleUpdateCommand() {
+        Product product;
         System.out.println("What product do you need? (id)");
         Long idProduct = scanner.nextLong();
         Optional<Product> productOptional = dao.returnProduct(idProduct);
-        System.out.println("What you want to update? name/price/producent/expiry(date)/quantity/unit");
-        String text = scanner.next();
-        Product product = productOptional.get();
-        if (text.equals("name")) {
-            System.out.println("Type name: ");
-            String name = scanner.next();
-            product.setName(name);
-        } else if (text.equals("price")) {
-            System.out.println("Type price: ");
-            Double price = scanner.nextDouble();
-            product.setPrice(price);
-        } else if (text.equals("producent")) {
-            System.out.println("Type producent: ");
-            String producent = scanner.next();
-            product.setName(producent);
-        } else if (text.equals("expiry")) {
-            System.out.println("Type expiry date: ");
-            LocalDate expiryDate = loadExpiryDateFromUser();
-            product.setExpiryDate(expiryDate);
-        } else if (text.equals("quantity")) {
-            System.out.println("Type quantity: ");
-            Double quantity = scanner.nextDouble();
-            product.setQuantity(quantity);
-        } else if (text.equals("unit")) {
-            System.out.println("Type unit: ");
-            ProductUnit productUnit = loadProductUnitFromUSer();
-            product.setUnit(productUnit);
+        if (productOptional.isPresent()) {
+            System.out.println("What you want to update? name/price/producent/expiry(date)/quantity/unit");
+            String text = scanner.next();
+            product = productOptional.get();
+            if (text.equals("name")) {
+                System.out.println("Type name: ");
+                String name = scanner.next();
+                product.setName(name);
+            } else if (text.equals("price")) {
+                System.out.println("Type price: ");
+                Double price = scanner.nextDouble();
+                product.setPrice(price);
+            } else if (text.equals("producent")) {
+                System.out.println("Type producent: ");
+                String producent = scanner.next();
+                product.setName(producent);
+            } else if (text.equals("expiry")) {
+                System.out.println("Type expiry date: ");
+                LocalDate expiryDate = loadExpiryDateFromUser();
+                product.setExpiryDate(expiryDate);
+            } else if (text.equals("quantity")) {
+                System.out.println("Type quantity: ");
+                Double quantity = scanner.nextDouble();
+                product.setQuantity(quantity);
+            } else if (text.equals("unit")) {
+                System.out.println("Type unit: ");
+                ProductUnit productUnit = loadProductUnitFromUSer();
+                product.setUnit(productUnit);
+            }
+            dao.updateProduct(product);
+        } else {
+            Optional.ofNullable("Wrong ID");
         }
-        dao.updateProduct(product);
     }
 
     private void handleReturnProductCommand() {
@@ -119,7 +123,7 @@ public class ProductCommandLineParser {
             } catch (InputMismatchException ime) {
                 System.err.println("Type numebers!");
             }
-        } while (quantity != null);
+        } while (quantity == null);
         return quantity;
     }
 
